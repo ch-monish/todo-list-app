@@ -1,6 +1,6 @@
 import React, { Component, useLayoutEffect } from "react";
 // import RoundCheckbox from 'rn-round-checkbox';
-// import { Checkbox } from 'react-native-paper';
+// import { AsyncStorage } from '@react-native-community/async-storage'
 import {
   AppRegistry,
   StyleSheet,
@@ -72,9 +72,29 @@ export default class TodoList extends Component {
     // alert(this.state.text)
     if (this.state.text != "") {
       // this.addTask
-      alert(`adding ${this.state.text}`)
+      // tasks: tasks.concat({ key: tasks.length, text: text })
       // this.changeTextHandler
       // this.addTask
+
+
+      let notEmpty = this.state.text.trim().length > 0;
+
+      if (notEmpty) {
+        this.setState(
+          prevState => {
+            let { tasks, text } = prevState;
+            return {
+              tasks: tasks.concat({ key: tasks.length, text: text }),
+              text: ""
+            };
+          },
+          () => Tasks.save(this.state.tasks)
+        );
+      }
+      // alert(`${this.state.text} added`)
+      ToastAndroid.show(`${this.state.text} added`, ToastAndroid.LONG)
+
+
 
     }
     // this.setState({})
