@@ -93,7 +93,7 @@ export default class TodoList extends Component {
       }
       // alert(`${this.state.text} added`)
       ToastAndroid.show(`${this.state.text} added`, ToastAndroid.LONG)
-
+      Keyboard.dismiss()
 
 
     }
