@@ -1,6 +1,6 @@
 import React, { Component, useLayoutEffect } from "react";
 // import RoundCheckbox from 'rn-round-checkbox';
-// import { AsyncStorage } from '@react-native-community/async-storage'
+// import { AsyncStorage } from '@react-native-community/async-storage';
 import {
   AppRegistry,
   StyleSheet,
@@ -39,7 +39,9 @@ export default class TodoList extends Component {
         prevState => {
           let { tasks, text } = prevState;
           return {
-            tasks: tasks.concat({ key: tasks.length, text: text }),
+            tasks: tasks.concat({ key: tasks.length.toString() + text, text: text }),
+            // tasks: tasks.concat({ key: tasks.length.toString() + text, text: text }),
+
             text: ""
           };
         },
@@ -73,31 +75,15 @@ export default class TodoList extends Component {
     if (this.state.text != "") {
       // this.addTask
       // tasks: tasks.concat({ key: tasks.length, text: text })
-      // this.changeTextHandler
-      // this.addTask
 
-
-      let notEmpty = this.state.text.trim().length > 0;
-
-      if (notEmpty) {
-        this.setState(
-          prevState => {
-            let { tasks, text } = prevState;
-            return {
-              tasks: tasks.concat({ key: tasks.length, text: text }),
-              text: ""
-            };
-          },
-          () => Tasks.save(this.state.tasks)
-        );
-      }
+      this.addTask()
       // alert(`${this.state.text} added`)
       ToastAndroid.show(`${this.state.text} added`, ToastAndroid.LONG)
       Keyboard.dismiss()
 
 
     }
-    // this.setState({})
+
 
   }
 
@@ -122,6 +108,7 @@ export default class TodoList extends Component {
         <Text style={{ fontSize: 28, top: 0, justifyContent: "space-around" }}>All Tasks</Text>
         <FlatList style={{ top: 14, padding: 1 }}
           // style={styles.list} 
+          keyExtractor={(item, index) => index.toString()}
           data={this.state.tasks}
 
           renderItem={({ item, index }) =>
@@ -130,7 +117,7 @@ export default class TodoList extends Component {
                 <View style={styles.hr}>
                   <CheckBox style={styles.checkbox} onChange={() => this.striketext(index)}></CheckBox>
 
-                  <Text style={styles.textInput} onLongPress={() => this.deleteTask(index)}>
+                  <Text style={styles.listtextview} onLongPress={() => this.deleteTask(index)}>
                     {item.text}
                   </Text>
                 </View>
@@ -263,7 +250,16 @@ const styles = StyleSheet.create({
     borderWidth: isAndroid ? 0 : 1,
     width: "100%",
 
-  }
+  },
+  listtextview: {
+    height: 20,
+    width: 310,
+    borderColor: "blue",
+
+    borderWidth: isAndroid ? 0 : 1,
+    width: "100%",
+
+  },
 });
 
 AppRegistry.registerComponent("TodoList", () => TodoList);
